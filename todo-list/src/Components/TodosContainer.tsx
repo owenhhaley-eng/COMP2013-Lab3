@@ -7,6 +7,7 @@ export default function TodosContainer({
   todosList,
   handleTodoCheck,
   handleDeleteTodo,
+  handleEditTodo,
 }: TodosContainerProps) {
   return (
     <div>
@@ -17,6 +18,7 @@ export default function TodosContainer({
           {...todo}
           handleTodoCheck={handleTodoCheck}
           handleDeleteTodo={handleDeleteTodo}
+          handleEditTodo={handleEditTodo}
         />
       ))}
     </div>

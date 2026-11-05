@@ -11,12 +11,14 @@ export interface TodoCardProps {
 export interface TodoCardFunctions extends TodoCardProps {
   handleTodoCheck: (e: ChangeEvent<HTMLInputElement>, id: string) => void;
   handleDeleteTodo: (id: string) => void;
+  handleEditTodo: (id: string) => void;
 }
 
 export interface TodosContainerProps {
   todosList: TodoCardProps[];
   handleTodoCheck: (e: ChangeEvent<HTMLInputElement>, id: string) => void;
   handleDeleteTodo: (id: string) => void;
+  handleEditTodo: (id: string) => void;
 }
 
 export interface FormComponentProps extends TodoCardProps {
@@ -48,14 +50,22 @@ export default function TodoApp() {
   //2. Handle the onSubmit even for the form to add the input to the todo list
   const handleOnSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault(); //to prevent the default refresh action from the submitting the form
-    setTodosList((prevList) => [
-      ...prevList,
-      {
-        id: crypto.randomUUID(),
-        title: todo.title,
-        checked: false,
-      },
-    ]);
+    if (todo.id === "") {
+      setTodosList((prevList) => [
+        ...prevList,
+        {
+          id: crypto.randomUUID(),
+          title: todo.title,
+          checked: false,
+        },
+      ]);
+    } else {
+      setTodosList((prevList) =>
+        prevList.map((entry) =>
+          entry.id === todo.id ? { ...entry, title: todo.title } : { ...entry },
+        ),
+      );
+    }
     setTodo({
       id: "",
       title: "",
@@ -74,9 +84,19 @@ export default function TodoApp() {
     );
   };
 
-  //4. Handle deleting an entrty using the delete button
+  //4. Handle deleting an entry using the delete button
   const handleDeleteTodo = (id: string) => {
     setTodosList((prevList) => prevList.filter((entry) => entry.id !== id));
+  };
+
+  //5. Handle editing an entry to change the title
+  const handleEditTodo = (id: string) => {
+    const todoEntry = todosList.find((entry) => entry.id === id) || {
+      title: "",
+      id: "",
+      checked: false,
+    };
+    setTodo({ ...todoEntry });
   };
 
   //Main Return
@@ -92,6 +112,7 @@ export default function TodoApp() {
         todosList={todosList}
         handleTodoCheck={handleTodoCheck}
         handleDeleteTodo={handleDeleteTodo}
+        handleEditTodo={handleEditTodo}
       />
     </div>
   );
