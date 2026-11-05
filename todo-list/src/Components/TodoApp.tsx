@@ -10,11 +10,13 @@ export interface TodoCardProps {
 
 export interface TodoCardFunctions extends TodoCardProps {
   handleTodoCheck: (e: ChangeEvent<HTMLInputElement>, id: string) => void;
+  handleDeleteTodo: (id: string) => void;
 }
 
 export interface TodosContainerProps {
   todosList: TodoCardProps[];
   handleTodoCheck: (e: ChangeEvent<HTMLInputElement>, id: string) => void;
+  handleDeleteTodo: (id: string) => void;
 }
 
 export interface FormComponentProps extends TodoCardProps {
@@ -72,6 +74,11 @@ export default function TodoApp() {
     );
   };
 
+  //4. Handle deleting an entrty using the delete button
+  const handleDeleteTodo = (id: string) => {
+    setTodosList((prevList) => prevList.filter((entry) => entry.id !== id));
+  };
+
   //Main Return
   return (
     <div>
@@ -81,7 +88,11 @@ export default function TodoApp() {
         handleFormOnChange={handleFormOnChange}
         handleOnSubmit={handleOnSubmit}
       />
-      <TodosContainer todosList={todosList} handleTodoCheck={handleTodoCheck} />
+      <TodosContainer
+        todosList={todosList}
+        handleTodoCheck={handleTodoCheck}
+        handleDeleteTodo={handleDeleteTodo}
+      />
     </div>
   );
 }

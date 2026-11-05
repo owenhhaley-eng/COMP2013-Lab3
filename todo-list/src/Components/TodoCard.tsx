@@ -11,6 +11,7 @@ export default function TodoCard({
   checked,
   title,
   handleTodoCheck,
+  handleDeleteTodo,
 }: TodoCardFunctions) {
   return (
     <div>
@@ -22,7 +23,7 @@ export default function TodoCard({
         onChange={(e) => handleTodoCheck(e, id)}
       />
       <span>{title}</span>
-      <button>Delete</button>
+      <button onClick={() => handleDeleteTodo(id)}>Delete</button>
       <button>Edit</button>
     </div>
   );
